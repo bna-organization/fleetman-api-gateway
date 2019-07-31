@@ -32,7 +32,7 @@ pipeline {
 
       stage('Push Image'){
         steps {
-           withDockerRegistry([credentialsId: "devops-tasks", url: "https://gcr.io"]){
+           withDockerRegistry([credentialsId: "gcr:devops-tasks", url: "https://gcr.io"]){
              sh 'docker push ${REPOSITORY_TAG}'
            }
         }  
