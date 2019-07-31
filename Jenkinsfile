@@ -25,13 +25,14 @@ pipeline {
 
       stage('Build Image') {
          steps {
-           dockerImage = docker.build(${REPOSITORY_TAG})
+           sh 'docker image build -t ${REPOSITORY_TAG} .'
+          
         } 
       }
 
       stage('Push Image'){
-       docker.withRegistry('https://gcr.io','devops-tasks'){
-         dockerImage.push()
+       withDockerRegistry([credentialsId: "devops-tasks", url: "https://gcr.io"]){
+         sh 'docker push ${REPOSITORY_TAG}'
        }  
         
      }
