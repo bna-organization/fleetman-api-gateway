@@ -23,14 +23,18 @@ pipeline {
          }
       }
 
-      stage('Build and Push Image') {
+      stage('Build Image') {
          steps {
-           sh 'docker image build -t ${REPOSITORY_TAG} .'
-           docker.withRegistry('https://gcr.io','devops-tasks'){
-             sh 'docker push ${REPOSITORY_TAG}'
-           }
-         }
+           dockerImage = docker.build(${REPOSITORY_TAG})
+        } 
       }
+
+      stage('Push Image'){
+       docker.withRegistry('https://gcr.io','devops-tasks'){
+         dockerImage.push()
+       }  
+        
+     }
 
       stage('Deploy to Cluster') {
           steps {
