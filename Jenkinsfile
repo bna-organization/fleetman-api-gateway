@@ -7,7 +7,7 @@ pipeline {
      // YOUR_DOCKERHUB_USERNAME (it doesn't matter if you don't have one)
 
      SERVICE_NAME = "fleetman-api-gateway"
-     REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
+     REPOSITORY_TAG="gcr.io/${GCP_PROJECT_NAME}i/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
    }
 
    stages {
@@ -26,6 +26,7 @@ pipeline {
       stage('Build and Push Image') {
          steps {
            sh 'docker image build -t ${REPOSITORY_TAG} .'
+           sh 'docker push ${REPOSITORY_TAG}'
          }
       }
 
